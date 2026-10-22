@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: ancient-event
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    healthCheckPath: /
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ancient-event-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+
+databases:
+  - name: ancient-event-db
+    databaseName: ancient_event
+    user: ancient_event_user
